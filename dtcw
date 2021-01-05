@@ -19,10 +19,6 @@ if command -v docker &> /dev/null; then
         echo "force use of docker"
 	shift
     fi
-    if ! docker info >/dev/null 2>&1; then
-        echo "Docker does not seem to be running, run it first and retry"
-        exit 1
-    fi
 fi
 if command -v sdk &> /dev/null; then
     echo "sdkamn available"
@@ -39,6 +35,10 @@ else
       command="$HOME/.doctoolchain/docToolchain-1.2.0/bin/doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 "
     else
       if [ "$docker" = true ] ; then
+	  if ! docker info >/dev/null 2>&1; then
+	      echo "Docker does not seem to be running, run it first and retry"
+	      exit 1
+	  fi
           docker_cmd=$(which docker)
           echo $docker_cmd
           command="$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project rdmueller/doctoolchain:rc-1.2.0 -c \"doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 && exit\""
