@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "dtcw - docToolchain wrapper V0.9"
+
 mainConfigFile=Config.groovy
 
 # check if CLI, docker or sdkman are installed
