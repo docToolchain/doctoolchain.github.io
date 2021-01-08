@@ -1,14 +1,42 @@
 #!/usr/bin/env bash
 
+MAIN_CONFIG_FILE=dtcConfig.groovy
+
+DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
+
 echo "dtcw - docToolchain wrapper V0.9"
 
-mainConfigFile=Config.groovy
+if [[ $# -lt 1 ]]; then
+    echo '
+Usage: ./dtcw [option...] [task...]
+
+You can use the same options and tasks as in underlying gradle.
+Use "./dtcw tasks" to see available tasks.
+
+Examples:
+
+  Download and install arc42 Template:
+    ./dtcw downloadTemplate
+
+  Generate PDF:
+    ./dtcw generatePDF
+
+  Generate HTML:
+    ./dtcw generateHTML
+
+  Publish HTML to Confluence:
+    ./dtcw publishToConfluence
+
+'
+    exit 1
+fi
 
 # check if CLI, docker or sdkman are installed
 cli=false
 docker=false
 sdkman=false
 homefolder=false
+
 if command -v doctoolchain &> /dev/null; then
     echo "docToolchain as CLI available"
     cli=true
@@ -23,7 +51,7 @@ if command -v docker &> /dev/null; then
     fi
 fi
 if command -v sdk &> /dev/null; then
-    echo "sdkamn available"
+    echo "sdkman available"
     sdkman=true
 fi
 if [ -d "$HOME/.doctoolchain/." ]; then
@@ -31,10 +59,10 @@ if [ -d "$HOME/.doctoolchain/." ]; then
     homefolder=true
 fi
 if [ "$cli" = true ] ; then
-    command="doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 "
+    command="doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS"
 else
     if [ "$homefolder" = true ] ; then
-      command="$HOME/.doctoolchain/docToolchain-1.2.0/bin/doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 "
+      command="$HOME/.doctoolchain/docToolchain-1.2.0/bin/doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS"
     else
       if [ "$docker" = true ] ; then
 	  if ! docker info >/dev/null 2>&1; then
@@ -61,7 +89,7 @@ else
                         mkdir $HOME/.doctoolchain
                         wget https://github.com/docToolchain/docToolchain/archive/v1.2.0.zip -O $HOME/.doctoolchain/source.zip
                         unzip $HOME/.doctoolchain/source.zip -d $HOME/.doctoolchain/.
-                        command="$HOME/.doctoolchain/docToolchain-1.2.0/bin/doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 "
+                        command="$HOME/.doctoolchain/docToolchain-1.2.0/bin/doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS"
                         break
                     ;;
                   No )
