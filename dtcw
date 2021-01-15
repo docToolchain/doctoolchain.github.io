@@ -50,6 +50,8 @@ if command -v docker &> /dev/null; then
 	shift
     fi
 fi
+#docker uses an older version at the moment, so deaktivate this option
+docker=false
 if command -v sdk &> /dev/null; then
     echo "sdkman available"
     sdkman=true
