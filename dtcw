@@ -27,6 +27,10 @@ Examples:
   Publish HTML to Confluence:
     ./dtcw publishToConfluence
 
+  see all tasks
+    ./dtcw tasks --group doctoolchain
+    
+  get more documentation at https://doctoolchain.github.io
 '
     exit 1
 fi
