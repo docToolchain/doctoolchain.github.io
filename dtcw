@@ -49,16 +49,6 @@ fi
 if command -v docker &> /dev/null; then
     echo "docker available"
     docker=true
-    if [ "$1" = "docker" ] ; then
-        cli=false
-        echo "force use of docker"
-	shift
-    fi
-fi
-if [ "$1" = "local" ] ; then
-    echo "force use of local install"
-    docker=false
-    shift
 fi
 if command -v sdk &> /dev/null; then
     echo "sdkman available"
@@ -67,6 +57,17 @@ fi
 if [ -d "$HOME/.doctoolchain/." ]; then
     echo "home folder exists"
     homefolder=true
+fi
+if [ "$1" = "local" ] ; then
+    echo "force use of local install"
+    docker=false
+    shift
+fi
+if [ "$1" = "docker" ] ; then
+    cli=false
+    homefolder=false
+    echo "force use of docker"
+    shift
 fi
 if [ "$cli" = true ] ; then
     command="doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS"
@@ -81,7 +82,7 @@ else
 	  fi
           docker_cmd=$(which docker)
           echo $docker_cmd
-          command="$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project rdmueller/doctoolchain:rc-${VERSION} -c \"doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 && exit\""
+          command="$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project rdmueller/doctoolchain:${VERSION} -c \"doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 && exit\""
           echo $command
       else
 
