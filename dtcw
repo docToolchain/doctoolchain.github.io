@@ -15,7 +15,7 @@ Usage: ./dtcw [option...] [task...]
 
 You can use the same options and tasks as in underlying gradle.
 Use "./dtcw tasks --group doctoolchain" to see available tasks.
-Use "local" or "docker" as first argument to force the use of a local or docker install.
+Use "local", "sdk" or "docker" as first argument to force the use of a local, sdkman or docker install.
 
 Examples:
 
@@ -42,6 +42,17 @@ docker=false
 sdkman=false
 homefolder=false
 
+if command -v java &> /dev/null; then
+else
+    echo "docToolchain depends on java, but the java command couldn't be found"
+    echo "to install java, one way is to install"
+    echo "sdkman and then java via sdkman"
+    echo "https://sdkman.io/install"
+    echo "$ curl -s "https://get.sdkman.io" | bash"
+    echo "$ sdk install java"
+exit 1
+fi
+
 if command -v doctoolchain &> /dev/null; then
     echo "docToolchain as CLI available"
     cli=true
@@ -67,6 +78,13 @@ if [ "$1" = "docker" ] ; then
     cli=false
     homefolder=false
     echo "force use of docker"
+    shift
+fi
+if [ "$1" = "sdk" ] ; then
+    cli=false
+    homefolder=false
+    sdkman=true
+    echo "force use of sdkman"
     shift
 fi
 if [ "$cli" = true ] ; then
