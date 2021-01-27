@@ -7,7 +7,7 @@ DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/archive/${VERSION}
 
 DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
 
-echo "dtcw - docToolchain wrapper V0.10"
+echo "dtcw - docToolchain wrapper V0.11"
 
 if [[ $# -lt 1 ]]; then
     echo '
@@ -43,6 +43,7 @@ sdkman=false
 homefolder=false
 
 if command -v java &> /dev/null; then
+    #do nothing
 else
     echo "docToolchain depends on java, but the java command couldn't be found"
     echo "to install java, one way is to install"
