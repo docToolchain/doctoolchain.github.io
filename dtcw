@@ -43,7 +43,7 @@ sdkman=false
 homefolder=false
 
 if command -v java &> /dev/null; then
-    #do nothing
+    java=true
 else
     echo "docToolchain depends on java, but the java command couldn't be found"
     echo "to install java, one way is to install"
