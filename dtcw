@@ -7,8 +7,8 @@ DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/archive/${VERSION}
 
 DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
 
-echo "dtcw - docToolchain wrapper V0.11"
-
+echo "dtcw - docToolchain wrapper V0.12"
+echo "docToolchain V${VERSION}"
 if [[ $# -lt 1 ]]; then
     echo '
 Usage: ./dtcw [option...] [task...]
@@ -73,6 +73,7 @@ fi
 if [ "$1" = "local" ] ; then
     echo "force use of local install"
     docker=false
+    cli=false
     shift
 fi
 if [ "$1" = "docker" ] ; then
@@ -84,16 +85,18 @@ fi
 if [ "$1" = "sdk" ] ; then
     cli=false
     homefolder=false
-    sdkman=true
     docker=false
+    sdkman=true
     echo "force use of sdkman"
     shift
 fi
 if [ "$cli" = true ] ; then
     command="doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS"
+    echo "use cli install $(which doctoolchain)"
 else
     if [ "$homefolder" = true ] ; then
       command="$HOME/.doctoolchain/docToolchain-${VERSION}/bin/doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS"
+      echo "use local homefolder install $HOME/.doctoolchain/"
     else
       if [ "$docker" = true ] ; then
 	  if ! docker info >/dev/null 2>&1; then
@@ -103,7 +106,7 @@ else
           docker_cmd=$(which docker)
           echo $docker_cmd
           command="$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project rdmueller/doctoolchain:${VERSION} -c \"doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS && exit\""
-          echo $command
+          echo "use docker installation"
       else
 
           echo "docToolchain not installed."
