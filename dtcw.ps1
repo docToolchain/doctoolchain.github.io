@@ -1,7 +1,7 @@
 
 $main_config_file = "docToolchainConfig.groovy"
 # $version=ng
-$version = "1.3.0"
+$version = "ng"
 $distribution_url = "https://github.com/docToolchain/docToolchain/archive/v$version.zip"
 
 $dtc_opts="$dtc_opts -PmainConfigFile=$main_config_file --warning-mode=none"
@@ -107,7 +107,7 @@ elseif ($docker) {
     $docker_cmd = Get-Command docker
     Write-Host $docker_cmd
     # TODO: Review next line:                                     
-    $command = "$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project rdmueller/doctoolchain:$version -c \doctoolchain . $commandArgs $DTC_OPTS && exit\"
+    $command = "$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:$version' -c 'doctoolchain . $commandArgs $DTC_OPTS && exit'"
 }
 else {
     Write-Host "docToolchain not installed."
