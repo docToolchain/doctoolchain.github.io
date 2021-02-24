@@ -15,17 +15,23 @@ cli=false
 docker=false
 sdkman=false
 homefolder=false
+java=false
 
 if command -v java &> /dev/null; then
     java=true
-else
+    if java -version 2>&1 >/dev/null | grep -q "Unable to locate a Java Runtime" ; then
+      ##we are on a mac and the java command is only a shim
+      java=false
+    fi
+fi
+if [ "$java" = false ] ; then
     echo "docToolchain depends on java, but the java command couldn't be found"
     echo "to install java, one way is to install"
     echo "sdkman and then java via sdkman"
     echo "https://sdkman.io/install"
     echo "$ curl -s "https://get.sdkman.io" | bash"
     echo "$ sdk install java"
-exit 1
+    exit 1
 fi
 
 if command -v doctoolchain &> /dev/null; then
