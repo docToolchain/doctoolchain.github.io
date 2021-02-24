@@ -122,7 +122,7 @@ else
                   Yes ) echo "installing doctoolchain";
                         #check that pre-requisites are met
                         if !(command -v wget &> /dev/null); then
-                          if !(command -v wget &> /dev/null); then
+                          if !(command -v curl &> /dev/null); then
                             echo "you need either wget or curl installed"
                             echo "please install it and re-run the command"
                             exit 1
