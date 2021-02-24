@@ -115,7 +115,7 @@ else
               echo "$ sdk install doctoolchain ${VERSION}-beta"
               exit
           else
-              echo "doctoolchain not found"
+              echo "sdkman not found"
               echo "Do you wish to install doctoolchain to $HOME/.doctoolchain?"
               select yn in "Yes" "No"; do
                 case $yn in
