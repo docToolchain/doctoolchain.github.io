@@ -7,7 +7,7 @@ DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/archive/${VERSION}
 
 DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
 
-echo "dtcw - docToolchain wrapper V0.15"
+echo "dtcw - docToolchain wrapper V0.16"
 echo "docToolchain V${VERSION}"
 
 # check if CLI, docker or sdkman are installed
@@ -69,6 +69,10 @@ if [ "$1" = "sdk" ] ; then
     sdkman=true
     echo "force use of sdkman"
     shift
+fi
+#if bakePreview is called, deactivate deamon
+if [ "$1" = "bakePreview" ] ; then
+    DTC_OPTS="$DTC_OPTS -Dorg.gradle.daemon=false"
 fi
 
 if [[ $# -lt 1 ]]; then
