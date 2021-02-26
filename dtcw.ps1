@@ -87,6 +87,10 @@ switch ($args[0]) {
         $firstArgsIndex = 0   # << Use all params        
     }
 }
+#if bakePreview is called, deactivate deamon
+if ( $args[0] -eq "bakePreview" ) {
+    $dtc_opts="$dtc_opts -Dorg.gradle.daemon=false"
+}
 
 $commandArgs = $args[$firstArgsIndex..$args.Count] -Join " "
 
