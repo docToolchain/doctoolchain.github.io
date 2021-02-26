@@ -21,7 +21,7 @@ Usage: ./dtcw [option...] [task...]
 
 You can use the same options and tasks as in underlying gradle.
 Use "./dtcw.ps1 tasks --group doctoolchain" to see available tasks.
-Use "local", "sdk" or "docker" as first argument to force the use of a local, sdkman or docker install.
+Use "local" or "docker" as first argument to force the use of a local or docker install.
 
 Examples:
 
@@ -128,7 +128,7 @@ else {
         Write-Warning @'
 >> TODO REVIEW:
 you need docToolchain as CLI-Tool installed or docker."
-to install docToolchain as CLI-Tool, please install...
+
 '@
         exit 1
     }
