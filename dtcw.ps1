@@ -1,7 +1,7 @@
 
 $main_config_file = "docToolchainConfig.groovy"
 # $version=ng
-$version = "ng"
+$version = "2.0.0-rc1"
 $distribution_url = "https://github.com/docToolchain/docToolchain/archive/v$version.zip"
 
 $dtc_opts="$dtc_opts -PmainConfigFile=$main_config_file --warning-mode=none"
@@ -99,7 +99,7 @@ if ($cli) {
     $command = "doctoolchain . $commandArgs $DTC_OPTS"
 }
 elseif ($exist_home) {        
-    $command = "$dtcw_path\docToolchain-$version\bin\doctoolchain . $commandArgs $DTC_OPTS"
+    $command = "$dtcw_path\docToolchain-$version\bin\doctoolchain.bat . $commandArgs $DTC_OPTS"
 }
 elseif ($docker) {
     # Check Docker is running...
@@ -111,7 +111,7 @@ elseif ($docker) {
     $docker_cmd = Get-Command docker
     Write-Host $docker_cmd
     # TODO: Review next line:                                     
-    $command = "$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:$version' -c 'doctoolchain . $commandArgs $DTC_OPTS && exit'"
+    $command = "$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$version' -c 'doctoolchain . $commandArgs $DTC_OPTS && exit'"
 }
 else {
     Write-Host "docToolchain not installed."
@@ -123,7 +123,7 @@ else {
         Invoke-WebRequest $distribution_url -OutFile "$dtcw_path\source.zip"  
         Expand-Archive -LiteralPath "$dtcw_path\source.zip" -DestinationPath "$dtcw_path\"
         # Remove-Item "$dtcw_path\source.zip"     #  << Remove .zip ?        
-        $command = "$dtcw_path\docToolchain-$version\bin\doctoolchain . $commandArgs $DTC_OPTS"        
+        $command = "$dtcw_path\docToolchain-$version\bin\doctoolchain.bat . $commandArgs $DTC_OPTS"        
     } else {
         Write-Warning @'
 >> TODO REVIEW:
@@ -135,4 +135,4 @@ you need docToolchain as CLI-Tool installed or docker."
 }
 
 Write-Host "Command to invoke: '$command'" # << line for debugging
-Invoke-Expression "cmd /c $command"
+Invoke-Expression "$command"
