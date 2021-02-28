@@ -4,7 +4,7 @@ $main_config_file = "docToolchainConfig.groovy"
 $version = "2.0.0-rc1"
 $distribution_url = "https://github.com/docToolchain/docToolchain/archive/v$version.zip"
 
-$dtc_opts="$dtc_opts -PmainConfigFile=$main_config_file --warning-mode=none"
+$dtc_opts="$dtc_opts -PmainConfigFile='$main_config_file' --warning-mode=none"
 
 # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
 # TODO: Check what's the best local installation directory in Win:
