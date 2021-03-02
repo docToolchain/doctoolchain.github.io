@@ -12,7 +12,7 @@ $home_path = $env:USERPROFILE
 $folder_name = ".doctoolchain"
 $dtcw_path = "$home_path\$folder_name"
  
-Write-Host "dtcw - docToolchain wrapper V0.11 (PS)"
+Write-Host "dtcw - docToolchain wrapper V0.16 (PS)"
 
 if ($args.Count -lt 1) {
     # Help text adapted to Win/PS: /<command>.ps1
@@ -111,7 +111,7 @@ elseif ($docker) {
     $docker_cmd = Get-Command docker
     Write-Host $docker_cmd
     # TODO: Review next line:                                     
-    $command = "$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$version' -c 'doctoolchain . $commandArgs $DTC_OPTS && exit'"
+    $command = "$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$version' -c ""doctoolchain . $commandArgs $DTC_OPTS && exit"""
 }
 else {
     Write-Host "docToolchain not installed."
