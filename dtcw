@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 MAIN_CONFIG_FILE=docToolchainConfig.groovy
-VERSION=2.0.0-rc3
+VERSION=2.0.0-rc4
 DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/archive/${VERSION}.zip
 
 
