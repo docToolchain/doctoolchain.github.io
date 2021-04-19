@@ -12,7 +12,7 @@ $home_path = $env:USERPROFILE
 $folder_name = ".doctoolchain"
 $dtcw_path = "$home_path\$folder_name"
  
-Write-Host "dtcw - docToolchain wrapper V0.16 (PS)"
+Write-Host "dtcw - docToolchain wrapper V0.18 (PS)"
 
 if ($args.Count -lt 1) {
     # Help text adapted to Win/PS: /<command>.ps1
@@ -67,7 +67,7 @@ if (Get-Command docker -ErrorAction SilentlyContinue) {
     $docker = $True
 }
 
-if (Test-Path $dtcw_path) {
+if (Test-Path "$dtcw_path\docToolchain-$version" ) {
     Write-Host "dtcw folder exist: '$dtcw_path'"
     $exist_home = $True
 }
