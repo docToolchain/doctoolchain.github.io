@@ -46,7 +46,7 @@ if command -v sdk &> /dev/null; then
     echo "sdkman available"
     sdkman=true
 fi
-if [ -d "$HOME/.doctoolchain/." ]; then
+if [ -d "$HOME/.doctoolchain/docToolchain-${VERSION}/." ]; then
     echo "home folder exists"
     homefolder=true
 fi
