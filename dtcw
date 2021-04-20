@@ -7,7 +7,7 @@ DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/archive/v${VERSION
 
 DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
 
-echo "dtcw - docToolchain wrapper V0.18"
+echo "dtcw - docToolchain wrapper V0.19"
 echo "docToolchain V${VERSION}"
 
 # check if CLI, docker or sdkman are installed
@@ -103,7 +103,7 @@ Examples:
 fi
 
 if [ "$cli" = true ] ; then
-    command="doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS"
+    command="$(which doctoolchain) . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS"
     echo "use cli install $(which doctoolchain)"
 else
     if [ "$homefolder" = true ] ; then
