@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+#here you can specify the URL of a theme to use with generateSite-task
+#export DTC_SITETHEME=https://....zip
+
+#here you can specify the location of additional templates
+#export DTC_TEMPLATE1=https://....zip
+#export DTC_TEMPLATE2=https://....zip
+#...
+
 MAIN_CONFIG_FILE=docToolchainConfig.groovy
 VERSION=2.0.0-rc13
 DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/archive/v${VERSION}.zip
@@ -7,7 +15,7 @@ DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/archive/v${VERSION
 
 DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
 
-echo "dtcw - docToolchain wrapper V0.20"
+echo "dtcw - docToolchain wrapper V0.21"
 echo "docToolchain V${VERSION}"
 
 # check if CLI, docker or sdkman are installed
