@@ -15,7 +15,7 @@ DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/archive/v${VERSION
 
 DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
 
-echo "dtcw - docToolchain wrapper V0.21"
+echo "dtcw - docToolchain wrapper V0.22"
 echo "docToolchain V${VERSION}"
 
 # check if CLI, docker or sdkman are installed
@@ -25,6 +25,17 @@ sdkman=false
 homefolder=false
 java=false
 
+java_help_and_die() {
+    echo "one way to install or update java is to install"
+    echo "sdkman and then java via sdkman"
+    echo "https://sdkman.io/install"
+    echo "$ curl -s "https://get.sdkman.io" | bash"
+    echo "$ sdk install java"
+    echo ""
+    echo "make sure that your java version is between 8 and 14"
+    exit 1
+
+}
 if command -v java &> /dev/null; then
     java=true
     if java -version 2>&1 >/dev/null | grep -q "Unable to locate a Java Runtime" ; then
@@ -34,14 +45,21 @@ if command -v java &> /dev/null; then
 fi
 if [ "$java" = false ] ; then
     echo "docToolchain depends on java, but the java command couldn't be found"
-    echo "to install java, one way is to install"
-    echo "sdkman and then java via sdkman"
-    echo "https://sdkman.io/install"
-    echo "$ curl -s "https://get.sdkman.io" | bash"
-    echo "$ sdk install java"
-    exit 1
+    java_help_and_die
 fi
-
+javaversion=$(java -version 2>&1 | head -1 | cut -d'"' -f2 | sed '/^1\./s///' | cut -d'.' -f1)
+echo "Java Version $javaversion"
+if (( $javaversion < 8 )); then
+    echo "your java version $javaversion is too old (<8): $(which java)"
+    echo "please update your java installation and try again"
+    java_help_and_die
+else
+  if (( $javaversion > 14 )); then
+    echo "your java version $javaversion is too new (>14): $(which java)"
+    echo "please update your java installation and try again"
+    java_help_and_die
+  fi
+fi
 if command -v doctoolchain &> /dev/null; then
     echo "docToolchain as CLI available"
     cli=true
