@@ -111,7 +111,8 @@ elseif ($docker) {
     $docker_cmd = Get-Command docker
     Write-Host $docker_cmd
     # TODO: Review next line:                                     
-    $command = "$docker_cmd run --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$version' -c ""doctoolchain . $commandArgs $DTC_OPTS && exit"""
+    $command = "$docker_cmd run -u $(id -u):$(id -g) --name doctoolchain${version} -e DTC_HEADLESS=1 -e DTC_SITETHEME -p 8042:8042 --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$version' -c ""doctoolchain . $commandArgs $DTC_OPTS && exit"""
+
 }
 else {
     Write-Host "docToolchain not installed."
