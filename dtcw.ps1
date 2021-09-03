@@ -1,7 +1,8 @@
 
 $main_config_file = "docToolchainConfig.groovy"
 # $version=ng
-$version = "2.0.0-rc13"
+$version = "2.0.0-rc14"
+$dockerVersion = "2.0.0-rc14b"
 $distribution_url = "https://github.com/docToolchain/docToolchain/archive/v$version.zip"
 
 $dtc_opts="$dtc_opts -PmainConfigFile='$main_config_file' --warning-mode=none"
@@ -111,7 +112,7 @@ elseif ($docker) {
     $docker_cmd = Get-Command docker
     Write-Host $docker_cmd
     # TODO: Review next line:                                     
-    $command = "$docker_cmd run -u $(id -u):$(id -g) --name doctoolchain${version} -e DTC_HEADLESS=1 -e DTC_SITETHEME -p 8042:8042 --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$version' -c ""doctoolchain . $commandArgs $DTC_OPTS && exit"""
+    $command = "$docker_cmd run -u $(id -u):$(id -g) --name doctoolchain${dockerVersion} -e DTC_HEADLESS=1 -e DTC_SITETHEME -p 8042:8042 --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$dockerVersion' -c ""doctoolchain . $commandArgs $DTC_OPTS && exit"""
 
 }
 else {
