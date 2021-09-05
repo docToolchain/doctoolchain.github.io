@@ -30,7 +30,7 @@ if [[ $(grep Microsoft /proc/version) ]]; then
   echo " "
   echo "Bash is running on WSL"
   echo "this might cause problems with plantUML"
-  echo "see https://doctoolchain.github.io/docToolchain/#wsl for more details"
+  echo "see https://doctoolchain.github.io/docToolchain/v2.0.x/#wsl for more details"
   echo " "
   wsl=true
 fi
