@@ -24,6 +24,16 @@ docker=false
 sdkman=false
 homefolder=false
 java=false
+wsl=false
+
+if [[ $(grep Microsoft /proc/version) ]]; then
+  echo " "
+  echo "Bash is running on WSL"
+  echo "this might cause problems with plantUML"
+  echo "see https://doctoolchain.github.io/docToolchain/#wsl for more details"
+  echo " "
+  wsl=true
+fi
 
 java_help_and_die() {
     echo "one way to install or update java is to install"
