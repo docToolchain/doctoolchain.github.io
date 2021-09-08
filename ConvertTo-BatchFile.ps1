@@ -4,24 +4,24 @@
 
 .DESCRIPTION
   Dieses Skript nimmt eine PowerShell-Datei entgegen und kopiert sie in eine 
-  Batch-Datei. Die Kopie wird dabei um einen Header ergänzt, der, als Batch 
-  aufgerufen, das ursprüngliche Skript wieder in eine temporäre Datei 
-  extrahiert und per PowerShell ausführt.
+  Batch-Datei. Die Kopie wird dabei um einen Header ergÃ¤nzt, der, als Batch
+  aufgerufen, das ursprÃ¼ngliche Skript wieder in eine temporÃ¤re Datei
+  extrahiert und per PowerShell ausfÃ¼hrt.
 
 .PARAMETER PsFile
   Name des zu konvertierenden PowerShell-Skripts
 
 .PARAMETER Destination
   Name und Pfad der resulierenden Batch-Datei. Wenn nicht angegeben, wird Name 
-  und Pfad der PowerShell-Datei übernommen und nur die Endung von .ps1 in .cmd 
-  geändert.
+  und Pfad der PowerShell-Datei Ã¼bernommen und nur die Endung von .ps1 in .cmd
+  geÃ¤ndert.
 
 .INPUTS
   Ein PowerShell-Skript
 
 .OUTPUTS
-  Eine Batch-Datei, die das PowerShell-Skript enthält und sich wie jede andere 
-  Batch-Datei starten lässt.
+  Eine Batch-Datei, die das PowerShell-Skript enthÃ¤lt und sich wie jede andere
+  Batch-Datei starten lÃ¤sst.
 
 .NOTES
   Version:        1.0
@@ -53,7 +53,7 @@ $header = @'
 %windir%\System32\more +{0} "%~f0" > "%temp%\%~n0.ps1"
 powershell -NoProfile -ExecutionPolicy Bypass -File "%temp%\%~n0.ps1" %*
 del %temp%\%~n0.ps1
-pause
+REM pause
 exit /b
 
 *** Ab hier PowerShell ***
