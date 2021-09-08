@@ -16,7 +16,6 @@ $distribution_url = "https://github.com/docToolchain/docToolchain/archive/v$vers
 $dtc_opts="$dtc_opts -PmainConfigFile='$main_config_file' --warning-mode=none"
 
 # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
-# TODO: Check what's the best local installation directory in Win:
 $home_path = $env:USERPROFILE
 $folder_name = ".doctoolchain"
 $dtcw_path = "$home_path\$folder_name"
@@ -119,7 +118,6 @@ elseif ($docker) {
     # Write-Host "Docker is running :)"
     $docker_cmd = Get-Command docker
     Write-Host $docker_cmd
-    # TODO: Review next line:                                     
     $command = "$docker_cmd run -u $(id -u):$(id -g) --name doctoolchain${dockerVersion} -e DTC_HEADLESS=1 -e DTC_SITETHEME -p 8042:8042 --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$dockerVersion' -c ""doctoolchain . $commandArgs $DTC_OPTS && exit"""
 
 }
@@ -128,15 +126,13 @@ else {
 
     $confirmation = Read-Host "Do you wish to install doctoolchain to '$dtcw_path\'? [Y/N]"
     if ($confirmation -eq 'y') {       
-        # TODO: Hide outputs ?
-        New-Item -Path $home_path -Name $folder_name -ItemType "directory" | Out-Null      
+        New-Item -Path $home_path -Name $folder_name -ItemType "directory" | Out-Null
         Invoke-WebRequest $distribution_url -OutFile "$dtcw_path\source.zip"  
         Expand-Archive -LiteralPath "$dtcw_path\source.zip" -DestinationPath "$dtcw_path\"
         # Remove-Item "$dtcw_path\source.zip"     #  << Remove .zip ?        
         $command = "$dtcw_path\docToolchain-$version\bin\doctoolchain.bat . $commandArgs $DTC_OPTS"        
     } else {
         Write-Warning @'
->> TODO REVIEW:
 you need docToolchain as CLI-Tool installed or docker."
 
 '@
