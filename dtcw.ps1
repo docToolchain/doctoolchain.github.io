@@ -1,8 +1,8 @@
 
 $main_config_file = "docToolchainConfig.groovy"
 # $version=ng
-$version = "2.0.0-rc14"
-$dockerVersion = "2.0.0-rc14b"
+$version = "2.0.0-rc15"
+$dockerVersion = "2.0.0-rc15"
 $distribution_url = "https://github.com/docToolchain/docToolchain/archive/v$version.zip"
 
 $dtc_opts="$dtc_opts -PmainConfigFile='$main_config_file' --warning-mode=none"
