@@ -117,8 +117,9 @@ else {
     Write-Host "docToolchain $version is not installed."
 
     $confirmation = Read-Host "Do you wish to install doctoolchain to '$dtcw_path\'? [Y/N]"
-    if ($confirmation -eq 'y') {       
-        New-Item -Path $home_path -Name $folder_name -ItemType "directory" | Out-Null
+    if ($confirmation -eq 'y') {
+        if (Test-Path $FolderName) {
+        New-Item -Path $home_path -Name $folder_name -ItemType "directory" -Force | Out-Null
         Invoke-WebRequest $distribution_url -OutFile "$dtcw_path\source.zip"  
         Expand-Archive -LiteralPath "$dtcw_path\source.zip" -DestinationPath "$dtcw_path\"
         # Remove-Item "$dtcw_path\source.zip"     #  << Remove .zip ?        
