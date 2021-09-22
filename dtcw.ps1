@@ -110,7 +110,7 @@ elseif ($docker) {
     # Write-Host "Docker is running :)"
     $docker_cmd = Get-Command docker
     Write-Host $docker_cmd
-    $command = "$docker_cmd run -u $(id -u):$(id -g) --name doctoolchain${dockerVersion} -e DTC_HEADLESS=1 -e DTC_SITETHEME -p 8042:8042 --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$dockerVersion' -c ""doctoolchain . $commandArgs $DTC_OPTS && exit"""
+    $command = "$docker_cmd run --name doctoolchain${dockerVersion} -e DTC_HEADLESS=1 -e DTC_SITETHEME -p 8042:8042 --rm -it --entrypoint /bin/bash -v ${PWD}:/project 'rdmueller/doctoolchain:v$dockerVersion' -c ""doctoolchain . $commandArgs $DTC_OPTS && exit"""
 
 }
 else {
