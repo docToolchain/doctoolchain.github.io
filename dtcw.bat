@@ -20,7 +20,7 @@ $home_path = $env:USERPROFILE
 $folder_name = ".doctoolchain"
 $dtcw_path = "$home_path\$folder_name"
  
-Write-Host "dtcw - docToolchain wrapper V0.18 (PS)"
+Write-Host "dtcw - docToolchain wrapper V0.19 (PS)"
 
 if ($args.Count -lt 1) {
     # Help text adapted to Win/PS: /<command>.ps1
@@ -125,15 +125,15 @@ else {
     Write-Host "docToolchain $version is not installed."
 
     $confirmation = Read-Host "Do you wish to install doctoolchain to '$dtcw_path\'? [Y/N]"
-    if ($confirmation -eq 'y') {       
+    if ($confirmation -eq 'y') {
         New-Item -Path $home_path -Name $folder_name -ItemType "directory" -Force | Out-Null
-        Invoke-WebRequest $distribution_url -OutFile "$dtcw_path\source.zip"  
+        Invoke-WebRequest $distribution_url -OutFile "$dtcw_path\source.zip"
         Expand-Archive -LiteralPath "$dtcw_path\source.zip" -DestinationPath "$dtcw_path\"
-        # Remove-Item "$dtcw_path\source.zip"     #  << Remove .zip ?        
-        $command = "$dtcw_path\docToolchain-$version\bin\doctoolchain.bat . $commandArgs $DTC_OPTS"        
+        # Remove-Item "$dtcw_path\source.zip"     #  << Remove .zip ?
+        $command = "$dtcw_path\docToolchain-$version\bin\doctoolchain.bat . $commandArgs $DTC_OPTS"
     } else {
         Write-Warning @'
-you need docToolchain as CLI-Tool installed or docker."
+you need docToolchain as CLI-Tool installed or docker.
 
 '@
         exit 1
