@@ -107,7 +107,7 @@ if ($cli) {
     $command = "doctoolchain . $commandArgs $DTC_OPTS"
 }
 elseif ($exist_home) {        
-    $command = "$dtcw_path\docToolchain-$version\bin\doctoolchain.bat . $commandArgs $DTC_OPTS"
+    $command = "&'$dtcw_path\docToolchain-$version\bin\doctoolchain.bat' . $commandArgs $DTC_OPTS"
 }
 elseif ($docker) {
     # Check Docker is running...
@@ -130,7 +130,7 @@ else {
         Invoke-WebRequest $distribution_url -OutFile "$dtcw_path\source.zip"
         Expand-Archive -LiteralPath "$dtcw_path\source.zip" -DestinationPath "$dtcw_path\"
         # Remove-Item "$dtcw_path\source.zip"     #  << Remove .zip ?
-        $command = "$dtcw_path\docToolchain-$version\bin\doctoolchain.bat . $commandArgs $DTC_OPTS"
+        $command = "&'$dtcw_path\docToolchain-$version\bin\doctoolchain.bat' . $commandArgs $DTC_OPTS"
     } else {
         Write-Warning @'
 you need docToolchain as CLI-Tool installed or docker.
