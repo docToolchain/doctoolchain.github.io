@@ -18,6 +18,10 @@ DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
 echo "dtcw - docToolchain wrapper V0.24"
 echo "docToolchain V${VERSION}"
 
+# unset JAVA_HOME so that it can't point to the wrong java version
+# Gradle likes to first take a look at JAVA_HOME and not the PATH
+export JAVA_HOME=
+
 # check if CLI, docker or sdkman are installed
 cli=false
 docker=false
@@ -36,6 +40,9 @@ if [[ $(grep -i 'microsoft' /proc/version) ]]; then
 fi
 
 java_help_and_die() {
+    echo "it might be that you have installed the needed version java in another shell from which you started dtcw"
+    echo "dtcw is running in bash and uses the PATH to find java"
+    echo ""
     echo "one way to install or update java is to install"
     echo "sdkman and then java via sdkman"
     echo "https://sdkman.io/install"
@@ -49,14 +56,14 @@ java_help_and_die() {
 
 install_local() {
     #check that pre-requisites are met
-    if !(command -v wget &> /dev/null); then
-      if !(command -v curl &> /dev/null); then
+    if ! (command -v wget &> /dev/null); then
+      if ! (command -v curl &> /dev/null); then
         echo "you need either wget or curl installed"
         echo "please install it and re-run the command"
         exit 1
       fi
     fi
-    if !(command -v unzip &> /dev/null); then
+    if ! (command -v unzip &> /dev/null); then
         echo "you need unzip installed"
         echo "please install it and re-run the command"
         exit 1
@@ -87,7 +94,7 @@ if command -v java &> /dev/null; then
     fi
 fi
 if [ "$java" = false ] ; then
-    echo "docToolchain depends on java, but the java command couldn't be found"
+    echo "docToolchain depends on java, but the java command couldn't be found in this shell (bash)"
     java_help_and_die
 fi
 javaversion=$(java -version 2>&1 | head -1 | cut -d'"' -f2 | sed '/^1\./s///' | cut -d'.' -f1)
