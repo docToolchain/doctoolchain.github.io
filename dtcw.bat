@@ -9,8 +9,8 @@ exit /b
 
 $main_config_file = "docToolchainConfig.groovy"
 # $version=ng
-$version = "2.0.1"
-$dockerVersion = "2.0.1"
+$version = "2.0.2"
+$dockerVersion = "2.0.2"
 $distribution_url = "https://github.com/docToolchain/docToolchain/releases/download/v$version/docToolchain-$version.zip"
 
 $dtc_opts="$dtc_opts -PmainConfigFile='$main_config_file' --warning-mode=none"
