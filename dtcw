@@ -15,7 +15,7 @@ DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/releases/download/
 
 DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
 
-echo "dtcw - docToolchain wrapper V0.25"
+echo "dtcw - docToolchain wrapper V0.26"
 echo "docToolchain V${VERSION}"
 
 # check if CLI, docker or sdkman are installed
