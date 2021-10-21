@@ -18,10 +18,6 @@ DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none"
 echo "dtcw - docToolchain wrapper V0.25"
 echo "docToolchain V${VERSION}"
 
-# unset JAVA_HOME so that it can't point to the wrong java version
-# Gradle likes to first take a look at JAVA_HOME and not the PATH
-export JAVA_HOME=
-
 # check if CLI, docker or sdkman are installed
 cli=false
 docker=false
