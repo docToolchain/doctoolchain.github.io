@@ -234,4 +234,4 @@ else
     fi
 fi
 
-bash -cl "$command"
+exec bash -c "$command"
