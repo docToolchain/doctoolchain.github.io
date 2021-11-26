@@ -20,7 +20,7 @@ $home_path = $env:USERPROFILE
 $folder_name = ".doctoolchain"
 $dtcw_path = "$home_path\$folder_name"
  
-Write-Host "dtcw - docToolchain wrapper V0.21 (PS-bat)"
+Write-Host "dtcw - docToolchain wrapper V0.22 (PS-bat)"
 
 if ($args.Count -lt 1) {
     # Help text adapted to Win/PS: /<command>.ps1
