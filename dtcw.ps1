@@ -5,7 +5,7 @@ $version = "2.0.3"
 $dockerVersion = "2.0.3"
 $distribution_url = "https://github.com/docToolchain/docToolchain/releases/download/v$version/docToolchain-$version.zip"
 
-$dtc_opts="$dtc_opts -PmainConfigFile='$main_config_file' --warning-mode=none"
+$dtc_opts="$dtc_opts -PmainConfigFile='$main_config_file' --warning-mode=none --no-daemon"
 
 # https://docs.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
 $home_path = $env:USERPROFILE
