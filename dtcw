@@ -45,6 +45,8 @@ java_help_and_die() {
     echo "$ curl -s "https://get.sdkman.io" | bash"
     echo "$ sdk install java"
     echo ""
+    echo "or you can download it from https://adoptium.net/"
+    echo ""
     echo "make sure that your java version is between 8 and 14"
     exit 1
 
