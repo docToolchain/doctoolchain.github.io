@@ -52,7 +52,7 @@ if (Get-Command java -ErrorAction SilentlyContinue) {
     Write-Warning @'
 docToolchain depends on java, but the java command couldn't be found to install java. 
 Please, follow the next link and install java:
-https://www.java.com/en/download/help/windows_manual_download.html
+https://adoptium.net/
 '@
     exit 1
 }
