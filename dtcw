@@ -67,7 +67,7 @@ install_local() {
         exit 1
     fi
     mkdir $HOME/.doctoolchain
-    wgetversion=$(wget --version | head -1 | sed -E 's/^.* 1.([0-9.]+) .*$/\1/')
+    wgetversion=$(wget --version | head -1 | sed -E 's/^.* 1.([0-9]+).*$/\1/')
     if command -v curl &> /dev/null; then
       curl -Lo $HOME/.doctoolchain/source.zip $DISTRIBUTION_URL
     else
