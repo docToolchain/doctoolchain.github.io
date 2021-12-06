@@ -25,6 +25,7 @@ sdkman=false
 homefolder=false
 java=false
 wsl=false
+doJavaCheck=true
 
 if [[ $(grep -i 'microsoft' /proc/version) ]]; then
   echo " "
@@ -48,10 +49,40 @@ java_help_and_die() {
     echo "or you can download it from https://adoptium.net/"
     echo ""
     echo "make sure that your java version is between 8 and 14"
+    echo ""
+    echo "If you do not want to use a local java installtion, you can also use docToolchain as docker container."
+    echo "In that case, specify 'docker' as first parameter in your statement."
+    echo "example: ./dtcw docker generateSite"
     exit 1
 
 }
+check_java() {
+  if command -v java &> /dev/null; then
+      java=true
+      if java -version 2>&1 >/dev/null | grep -q "Unable to locate a Java Runtime" ; then
+        ##we are on a mac and the java command is only a shim
+        java=false
+      fi
+  fi
+  if [ "$java" = false ] ; then
+      echo "docToolchain depends on java, but the java command couldn't be found in this shell (bash)"
+      java_help_and_die
+  fi
+  javaversion=$(java -version 2>&1 | head -1 | cut -d'"' -f2 | sed '/^1\./s///' | cut -d'.' -f1)
+  echo "Java Version $javaversion"
+  if (( $javaversion < 8 )); then
+      echo "your java version $javaversion is too old (<8): $(which java)"
+      echo "please update your java installation and try again"
+      java_help_and_die
+  else
+    if (( $javaversion > 14 )); then
+      echo "your java version $javaversion is too new (>14): $(which java)"
+      echo "please update your java installation and try again"
+      java_help_and_die
+    fi
+  fi
 
+}
 install_local() {
     #check that pre-requisites are met
     if ! (command -v wget &> /dev/null); then
@@ -84,30 +115,6 @@ install_local() {
 
 }
 
-if command -v java &> /dev/null; then
-    java=true
-    if java -version 2>&1 >/dev/null | grep -q "Unable to locate a Java Runtime" ; then
-      ##we are on a mac and the java command is only a shim
-      java=false
-    fi
-fi
-if [ "$java" = false ] ; then
-    echo "docToolchain depends on java, but the java command couldn't be found in this shell (bash)"
-    java_help_and_die
-fi
-javaversion=$(java -version 2>&1 | head -1 | cut -d'"' -f2 | sed '/^1\./s///' | cut -d'.' -f1)
-echo "Java Version $javaversion"
-if (( $javaversion < 8 )); then
-    echo "your java version $javaversion is too old (<8): $(which java)"
-    echo "please update your java installation and try again"
-    java_help_and_die
-else
-  if (( $javaversion > 14 )); then
-    echo "your java version $javaversion is too new (>14): $(which java)"
-    echo "please update your java installation and try again"
-    java_help_and_die
-  fi
-fi
 if command -v doctoolchain &> /dev/null; then
     echo "docToolchain as CLI available"
     cli=true
@@ -195,6 +202,7 @@ else
           docker_cmd=$(which docker)
           echo $docker_cmd
           command="$docker_cmd run -u $(id -u):$(id -g) --name doctoolchain${version} -e DTC_HEADLESS=1 -e DTC_SITETHEME -p 8042:8042 --rm -i --entrypoint /bin/bash -v '${PWD}:/project' rdmueller/doctoolchain:v${VERSION} -c \"doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS && exit\""
+          doJavaCheck=false
 	  echo "use docker installation"
       else
 
@@ -231,5 +239,7 @@ else
        fi
     fi
 fi
-
+if [ "$doJavaCheck" = true ] ; then
+    check_java
+fi
 exec bash -c "$command"
