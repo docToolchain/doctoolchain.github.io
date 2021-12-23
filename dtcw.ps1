@@ -4,6 +4,7 @@ $main_config_file = "docToolchainConfig.groovy"
 $version = "2.0.3"
 $dockerVersion = "2.0.3"
 $distribution_url = "https://github.com/docToolchain/docToolchain/releases/download/v$version/docToolchain-$version.zip"
+$env:DTCW_PROJECT_BRANCH = (git branch --show-current)
 
 $dtc_opts="$dtc_opts -PmainConfigFile='$main_config_file' --warning-mode=none --no-daemon"
 
