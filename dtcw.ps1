@@ -1,6 +1,8 @@
 
+#here you can specify the URL of a theme to use with generateSite-task
+#$env:DTC_SITETHEME = "https://....zip"
+
 $main_config_file = "docToolchainConfig.groovy"
-# $version=ng
 $version = "2.0.3"
 $dockerVersion = "2.0.3"
 $distribution_url = "https://github.com/docToolchain/docToolchain/releases/download/v$version/docToolchain-$version.zip"
@@ -13,7 +15,7 @@ $home_path = $env:USERPROFILE
 $folder_name = ".doctoolchain"
 $dtcw_path = "$home_path\$folder_name"
  
-Write-Host "dtcw - docToolchain wrapper V0.22 (PS)"
+Write-Host "dtcw - docToolchain wrapper V0.23 (PS)"
 
 if ($args.Count -lt 1) {
     # Help text adapted to Win/PS: /<command>.ps1
