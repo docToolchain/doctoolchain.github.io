@@ -61,7 +61,8 @@ if (Get-Command java -ErrorAction SilentlyContinue) {
     Write-Warning @'
 docToolchain depends on java, but the java command couldn't be found to install java. 
 Please, follow the next link and install java:
-https://adoptium.net/
+>> https://adoptium.net/
+please choose Temurin 11
 '@
     exit 1
 }
