@@ -56,6 +56,8 @@ $cli = $docker = $exist_home =  $False
 
 if (Get-Command java -ErrorAction SilentlyContinue) {    
     $java = $True
+    $javaversion = (Get-Command java | Select-Object -ExpandProperty Version).toString()
+    echo "Java Version $javaversion"
 } else {    
     # Text adapted
     Write-Warning @'
