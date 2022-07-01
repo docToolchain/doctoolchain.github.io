@@ -114,6 +114,7 @@ switch ($args[0]) {
     "getJava" {
         Write-Host "this script assumes that you have a 64 bit Windows installation"
         Write-Host "it now tries to install Java for you"
+        New-Item -Path $home_path -Name $folder_name -ItemType "directory" -Force | Out-Null
         $jdkDistribution = "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.15%2B10/OpenJDK11U-jdk_x64_windows_hotspot_11.0.15_10.zip"
         Write-Host "downloadting JDK temurin11 from adoptiom to $dtcw_path/jdk.zip"
         Invoke-WebRequest $jdkDistribution -OutFile "$dtcw_path\jdk.zip"
