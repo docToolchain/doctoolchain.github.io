@@ -167,20 +167,19 @@ if [ "$1" == "getJava" ] ; then
         arch=`uname -m`
         os=`uname -s`
         case "$arch" in
-          x86_64 )
-            arch=x64
-            ;;
+          x86_64 ) arch=x64 ;;
+          arm64 )  arch=arm ;;  
         esac
         case "$os" in
-          Linux )
-            os=linux
-            ;;
+          Linux )  os=linux ;;
+          Darwin ) os=mac ;;
+          Cygwin ) os=linux ;;  
         esac
         echo "this script assumes that you have linux as operating system ($arch / $os)"
         echo "it now tries to install Java for you"
         mkdir $HOME/.doctoolchain/jdk11
         echo "downloadting JDK temurin11 from adoptiom to $HOME/.doctoolchain/jdk11.tar.gz"
-        wget -r -O $HOME/.doctoolchain/jdk11/jdk11.tar.gz https://api.adoptopenjdk.net/v3/binary/latest/$version/$releasetype/$os/$arch/$imagetype/$implementation/$heapsize/adoptopenjdk
+        wget -r -O $HOME/.doctoolchain/jdk11/jdk11.tar.gz https://api.adoptium.net/v3/binary/latest/$version/$releasetype/$os/$arch/$imagetype/$implementation/$heapsize/eclipse?project=jdk
         echo "expanding JDK"
         tar -zxf $HOME/.doctoolchain/jdk11/jdk11.tar.gz --strip 1 -C $HOME/.doctoolchain/jdk11/.
         shift
