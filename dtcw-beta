@@ -168,7 +168,7 @@ if [ "$1" == "getJava" ] ; then
         os=`uname -s`
         case "$arch" in
           x86_64 ) arch=x64 ;;
-          arm64 )  arch=arm ;;  
+          arm64 )  arch=aarch64 ;;  
         esac
         case "$os" in
           Linux )  os=linux ;;
