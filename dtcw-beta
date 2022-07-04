@@ -30,7 +30,7 @@ doJavaCheck=true
 if [ -d "$HOME/.doctoolchain/jdk11/." ]; then
     echo "local java JDK-11 found"
     java=true
-    if [ -d "$HOME/.doctoolchain/jdk11/Contents/."]; then
+    if [ -d "$HOME/.doctoolchain/jdk11/Contents/." ]; then
       DTC_OPTS="$DTC_OPTS '-Dorg.gradle.java.home=$HOME/.doctoolchain/jdk11/Contents/Home'"
     else 
       DTC_OPTS="$DTC_OPTS '-Dorg.gradle.java.home=$HOME/.doctoolchain/jdk11'"
