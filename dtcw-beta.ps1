@@ -69,9 +69,9 @@ if ($java) {
     {
         # Text adapted
         Write-Warning @'
-docToolchain depends on java, but the java command couldn't be found to install java.
+docToolchain depends on java, but the java command couldn't be found.
 
-you can type
+to install java, you can type
 
 ./dtcw getJava
 
