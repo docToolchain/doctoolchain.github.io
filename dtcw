@@ -283,22 +283,27 @@ else
                   install_local
               else
                   echo "Do you wish to install doctoolchain to $HOME/.doctoolchain?"
-                  select yn in "Yes" "No"; do
-                    case $yn in
-                      Yes ) echo "installing doctoolchain";
-                            install_local
-                            break
-                        ;;
-                      No )
-                            echo "you need docToolchain as CLI-Tool installed or docker."
-                            echo "to install docToolchain as CLI-Tool, please install"
-                            echo "sdkman and re-run this command."
-                            echo "https://sdkman.io/install"
-                            echo "$ curl -s "https://get.sdkman.io" | bash"
-                            exit 1
-                        ;;
-                    esac
-                  done
+                  if tty -s; then
+                    select yn in "Yes" "No"; do
+                      case $yn in
+                        Yes ) echo "installing doctoolchain";
+                              install_local
+                              break
+                          ;;
+                        No )
+                              echo "you need docToolchain as CLI-Tool installed or docker."
+                              echo "to install docToolchain as CLI-Tool, please install"
+                              echo "sdkman and re-run this command."
+                              echo "https://sdkman.io/install"
+                              echo "$ curl -s "https://get.sdkman.io" | bash"
+                              exit 1
+                          ;;
+                      esac
+                    done
+                  else
+                    echo "installing doctoolchain"
+                    install_local
+                  fi
              fi
          fi
        fi
