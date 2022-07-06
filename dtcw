@@ -139,6 +139,7 @@ install_local() {
         echo "please install it and re-run the command"
         exit 1
     fi
+    echo "installing doctoolchain"
     mkdir $HOME/.doctoolchain
     wgetversion=$(wget --version | head -1 | sed -E 's/^.* 1.([0-9]+).*$/\1/')
     if command -v curl &> /dev/null; then
