@@ -13,6 +13,13 @@ VERSION=2.0.5
 DISTRIBUTION_URL=https://github.com/docToolchain/docToolchain/releases/download/v${VERSION}/docToolchain-${VERSION}.zip
 export DTC_PROJECT_BRANCH=$(git branch --show-current)
 
+: ${DTC_HEADLESS:="false"}
+if tty -s; then
+  echo "Using headless mode since there is no (terminal) interaction possible"
+  DTC_HEADLESS=true
+fi
+export DTC_HEADLESS
+
 DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none --no-daemon"
 
 echo "dtcw - docToolchain wrapper V0.31"
@@ -132,6 +139,7 @@ install_local() {
         echo "please install it and re-run the command"
         exit 1
     fi
+    echo "installing doctoolchain"
     mkdir $HOME/.doctoolchain
     wgetversion=$(wget --version | head -1 | sed -E 's/^.* 1.([0-9]+).*$/\1/')
     if command -v curl &> /dev/null; then
@@ -266,7 +274,7 @@ else
           else
               pwd=$PWD
           fi
-          command="'$docker_cmd' run -u $(id -u):$(id -g) --name doctoolchain${version} -e DTC_HEADLESS=1 -e DTC_SITETHEME -p 8042:8042 --rm -i --entrypoint //bin/bash -v '${pwd}:/project' rdmueller/doctoolchain:v${VERSION} -c \"doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS && exit\""
+          command="'$docker_cmd' run -u $(id -u):$(id -g) --name doctoolchain${version} -e DTC_HEADLESS=true -e DTC_SITETHEME -p 8042:8042 --rm -i --entrypoint //bin/bash -v '${pwd}:/project' rdmueller/doctoolchain:v${VERSION} -c \"doctoolchain . $1 $2 $3 $4 $5 $6 $7 $8 $9 $DTC_OPTS && exit\""
           doJavaCheck=false
 	  echo "use docker installation"
       else
@@ -278,32 +286,26 @@ else
               exit
           else
               echo "sdkman not found"
-              if [ "$DTC_HEADLESS" == true ] ; then
+              if $DTC_HEADLESS ; then
                   # just download
                   install_local
               else
                   echo "Do you wish to install doctoolchain to $HOME/.doctoolchain?"
-                  if tty -s; then
-                    select yn in "Yes" "No"; do
-                      case $yn in
-                        Yes ) echo "installing doctoolchain";
-                              install_local
-                              break
-                          ;;
-                        No )
-                              echo "you need docToolchain as CLI-Tool installed or docker."
-                              echo "to install docToolchain as CLI-Tool, please install"
-                              echo "sdkman and re-run this command."
-                              echo "https://sdkman.io/install"
-                              echo "$ curl -s "https://get.sdkman.io" | bash"
-                              exit 1
-                          ;;
-                      esac
-                    done
-                  else
-                    echo "installing doctoolchain"
-                    install_local
-                  fi
+                  select yn in "Yes" "No"; do
+                    case $yn in
+                      Yes ) install_local
+                            break
+                        ;;
+                      No )
+                            echo "you need docToolchain as CLI-Tool installed or docker."
+                            echo "to install docToolchain as CLI-Tool, please install"
+                            echo "sdkman and re-run this command."
+                            echo "https://sdkman.io/install"
+                            echo "$ curl -s "https://get.sdkman.io" | bash"
+                            exit 1
+                        ;;
+                    esac
+                  done
              fi
          fi
        fi
