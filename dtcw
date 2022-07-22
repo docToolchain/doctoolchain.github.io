@@ -214,7 +214,7 @@ if [ "$1" == "getJava" ] ; then
         esac
         echo "this script assumes that you have linux as operating system ($arch / $os)"
         echo "it now tries to install Java for you"
-        mkdir $HOME/.doctoolchain/jdk
+        mkdir -p $HOME/.doctoolchain/jdk
         echo "downloading JDK Temurin 11 from adoptiom to $HOME/.doctoolchain/jdk.tar.gz"
         wget -r -O $HOME/.doctoolchain/jdk/jdk.tar.gz https://api.adoptium.net/v3/binary/latest/$version/$releasetype/$os/$arch/$imagetype/$implementation/$heapsize/eclipse?project=jdk
         echo "expanding JDK"
