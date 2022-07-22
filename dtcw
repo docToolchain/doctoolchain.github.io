@@ -61,7 +61,16 @@ if [ -d "$HOME/.doctoolchain/jdk/." ]; then
     echo "use $javaHome as JDK"
     DTC_OPTS="$DTC_OPTS '-Dorg.gradle.java.home=$javaHome'"
     if [ -z "${JAVA_HOME}" ]; then
+      #if JAVA_HOME is not set, export it
       export JAVA_HOME=$javaHome
+    else
+      if command -v $JAVA_HOME/bin/java &> /dev/null; then
+        #java is installed and JAVA_HOME is ok
+        echo ""
+      else
+        #set JAVA_HOME to our own JDK
+        export JAVA_HOME=$javaHome
+      fi
     fi
     doJavaCheck=false
 fi
@@ -317,4 +326,5 @@ fi
 if [ "$doJavaCheck" = true ] ; then
     check_java
 fi
+
 exec bash -c "$command"
