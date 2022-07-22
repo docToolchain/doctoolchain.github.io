@@ -23,7 +23,7 @@ else
 fi
 export DTC_HEADLESS
 
-DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none --no-daemon"
+DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none --no-daemon '-Dgradle.user.home=$HOME/.doctoolchain/.gradle'"
 
 echo "dtcw - docToolchain wrapper V0.31"
 echo "docToolchain V${VERSION}"
