@@ -23,7 +23,12 @@ else
 fi
 export DTC_HEADLESS
 
-DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none --no-daemon '-Dgradle.user.home=$HOME/.doctoolchain/.gradle'"
+DTC_OPTS="$DTC_OPTS -PmainConfigFile=$MAIN_CONFIG_FILE --warning-mode=none --no-daemon "
+
+if !$DTC_HEADLESS ; then
+  # important for the docker file to find dependencies
+  DTC_OPTS="$DTC_OPTS '-Dgradle.user.home=$HOME/.doctoolchain/.gradle'"
+fi
 
 echo "dtcw - docToolchain wrapper V0.31"
 echo "docToolchain V${VERSION}"
