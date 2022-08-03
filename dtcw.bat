@@ -5,8 +5,7 @@ del %temp%\%~n0.ps1
 REM pause
 exit /b
 
-*** Ab hier PowerShell ***
-
+*** PowerShell from here on ***
 
 #here you can specify the URL of a theme to use with generateSite-task
 #$env:DTC_SITETHEME = "https://....zip"
@@ -65,7 +64,7 @@ if (Test-Path "$dtcw_path\jdk-11.0.15+10" ) {
     $doJavaCheck = $False
 }
 
-Write-Host "dtcw - docToolchain wrapper V0.24 (PS-bat)"
+Write-Host "dtcw - docToolchain wrapper V0.24 (PS)"
 
 if ($args.Count -lt 1) {
     # Help text adapted to Win/PS: /<command>.ps1
