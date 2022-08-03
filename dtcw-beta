@@ -83,10 +83,10 @@ download ( ) {
         echo "please install it and re-run the command"
         exit 1
     fi
-    wgetversion=$(wget --version && true | head -1 | sed -E 's/^.* 1.([0-9]+).*$/\1/')
     if command -v curl &> /dev/null; then
       curl -Lo $toLocation $url
     else
+      wgetversion=$(wget --version && true | head -1 | sed -E 's/^.* 1.([0-9]+).*$/\1/')
       if (( $wgetversion > 13 )); then
         wget $url -O $toLocation
       else
