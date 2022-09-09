@@ -54,7 +54,7 @@ please choose Temurin 11
     }
 }
 
-Write-Host "dtcw - docToolchain wrapper V0.24 (PS)"
+Write-Host "dtcw - docToolchain wrapper V0.33 (PS)"
 
 if ($args.Count -lt 1) {
     # Help text adapted to Win/PS: /<command>.ps1
