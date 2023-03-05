@@ -12,8 +12,8 @@ exit /b
 #$env:DTC_SITETHEME = "https://....zip"
 
 $main_config_file = "docToolchainConfig.groovy"
-$version = "2.2.0"
-$dockerVersion = "2.2.0"
+$version = "2.2.1"
+$dockerVersion = "2.2.1"
 $distribution_url = "https://github.com/docToolchain/docToolchain/releases/download/v$version/docToolchain-$version.zip"
 
 if (Test-Path ".git" ) {
@@ -94,7 +94,7 @@ please choose Temurin 11
     }
 }
 
-Write-Host "dtcw - docToolchain wrapper V0.36(PS)"
+Write-Host "dtcw - docToolchain wrapper V0.37(PS)"
 
 if ($args.Count -lt 1) {
     # Help text adapted to Win/PS: /<command>.ps1
