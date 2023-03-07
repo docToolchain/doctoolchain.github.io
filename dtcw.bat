@@ -34,7 +34,7 @@ $dtc_opts="$env:dtc_opts -PmainConfigFile='$main_config_file' --warning-mode=non
 function java_help_and_die()
 {
     Write-Host @"
-to install a local java for docToolchain, you cann run
+to install a local java for docToolchain, you can run
 
 ./dtcw getJava
 
@@ -94,7 +94,7 @@ please choose Temurin 11
     }
 }
 
-Write-Host "dtcw - docToolchain wrapper V0.37(PS)"
+Write-Host "dtcw - docToolchain wrapper V0.39(PS)"
 
 if ($args.Count -lt 1) {
     # Help text adapted to Win/PS: /<command>.ps1
@@ -135,23 +135,29 @@ if (Get-Command dooctoolchain -ErrorAction SilentlyContinue) {
 if (Get-Command docker -ErrorAction SilentlyContinue) {
     Write-Host "docker available"
     $docker = $True
+    $doJavaCheck = $False
 }
 
 if (Test-Path "$dtcw_path\docToolchain-$version" ) {
     Write-Host "dtcw folder exist: '$dtcw_path'"
     $exist_home = $True
+    $docker = $False
+    $doJavaCheck = $True
 }
 
 switch ($args[0]) {
     "local" {
         Write-Host "force use of local install"
         $docker = $False
+        $doJavaCheck = $True
         $firstArgsIndex = 1   # << Shift first param
     }
     "docker" {
         Write-Host "force use of docker"
         $cli = $exist_home = $False
         $firstArgsIndex = 1   # << Shift first param
+        $doJavaCheck = $False
+        $docker = $True
     }
     "getJava" {
         Write-Host "this script assumes that you have a 64 bit Windows installation"
@@ -219,7 +225,13 @@ elseif ($exist_home) {
 elseif ($docker) {
     # Check Docker is running...
     if (-not (Invoke-Expression "docker ps")) {
+        Write-Host ""
         Write-Host "Docker does not seem to be running, run it first and retry"
+        Write-Host "if you want to use a local installation of doctoolchain instead"
+        Write-Host "use 'local' as first argument to force the installation and use of a local install."
+        Write-Host ""
+        Write-Host "Example: ./dtcw.ps1 local install"
+        Write-Host ""
         exit 1
     }
     # Write-Host "Docker is running :)"
