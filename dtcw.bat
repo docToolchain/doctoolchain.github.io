@@ -18,7 +18,7 @@ $ErrorActionPreference = "Stop"
 
 # See https://github.com/docToolchain/docToolchain/releases for available versions.
 # Set DTC_VERSION to "latest" to get the latest, yet unreleased version.
-$DTC_VERSION = "3.3.1"
+$DTC_VERSION = "3.4.0"
 if ($env:DTC_VERSION) { $DTC_VERSION = $env:DTC_VERSION }
 
 #here you can specify the URL of a theme to use with generateSite-task
@@ -97,7 +97,7 @@ function main($_args) {
     }
     elseif ( $_args[0] -eq "getJava" ) {
         # TODO: remove getJava in the next major release
-        Write-Warning "Warning: 'getJava' is deprecated and and will be removed. Use './dtcw install java' instead."
+        Write-Warning "Warning: 'getJava' is deprecated and will be removed. Use './dtcw install java' instead."
         install_component_and_exit $environment "java"
     }
     # No install command, so forward call to docToolchain but first we check if
