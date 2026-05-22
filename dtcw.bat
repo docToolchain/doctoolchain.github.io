@@ -18,7 +18,7 @@ $ErrorActionPreference = "Stop"
 
 # See https://github.com/docToolchain/docToolchain/releases for available versions.
 # Set DTC_VERSION to "latest" to get the latest, yet unreleased version.
-$DTC_VERSION = "3.4.1"
+$DTC_VERSION = "3.5.0"
 if ($env:DTC_VERSION) { $DTC_VERSION = $env:DTC_VERSION }
 
 #here you can specify the URL of a theme to use with generateSite-task
@@ -37,8 +37,10 @@ if ($env:DTC_CONFIG_FILE) { $DTC_CONFIG_FILE = $env:DTC_CONFIG_FILE }
 if (Test-Path ".git" ) { $env:DTCW_PROJECT_BRANCH = (git branch --show-current) } else { $env:DTCW_PROJECT_BRANCH = "" }
 
 # Options passed to docToolchain
-$DTC_OPTS = "$env:DTC_OPTS -PmainConfigFile='$DTC_CONFIG_FILE' --warning-mode=none --no-daemon '-Dfile.encoding=UTF-8' "
-
+$DTC_OPTS = "$env:DTC_OPTS --warning-mode=none --no-daemon '-Dfile.encoding=UTF-8'"
+if ($DTC_CONFIG_FILE) {
+    $DTC_OPTS="$DTC_OPTS -PmainConfigFile=$DTC_CONFIG_FILE"
+}
 $distribution_url = "https://github.com/docToolchain/docToolchain/releases/download/v$DTC_VERSION/docToolchain-$DTC_VERSION.zip"
 
 # Here you find the project
@@ -112,7 +114,7 @@ function main($_args) {
     }
     else {
         $docker_image_name = "doctoolchain/doctoolchain"
-        if ( $_args[0] -eq "install" ) {
+        if ( $_args[0] -eq "image" ) {
             # shift 1
             $null, $_args = $_args
             $docker_image_name = $_args[0]
@@ -467,19 +469,11 @@ function assert_java_version_supported() {
 
     Write-Output "Java Version $javaversion"
 
-    if ([int]$javaversion -lt 11 ) {
+    if ([int]$javaversion -ne 17 ) {
         Write-Warning @"
 unsupported Java version ${javaversion} [$JAVA_CMD]
 "@
         java_help_and_die
-    }
-    else {
-        if ([int]$javaversion -gt 17 ) {
-            Write-Warning @"
-unsupported Java version ${javaversion} [$JAVA_CMD]
-"@
-            java_help_and_die
-        }
     }
     Write-Output "Using Java ${javaversion} [${JAVA_CMD}]"
     return
@@ -487,8 +481,8 @@ unsupported Java version ${javaversion} [$JAVA_CMD]
 
 function java_help_and_die() {
     Write-Host @"
-docToolchain supports Java versions 11, 14 or 17 (preferred). In case one of those
-Java versions is installed make sure 'java' is found with your PATH environment
+docToolchain supports Java version 17 only. In case that
+Java version is installed make sure 'java' is found with your PATH environment
 variable. As alternative you may provide the location of your Java installation
 with JAVA_HOME.
 
@@ -575,7 +569,7 @@ following docToolchain environments:
     > ./dtcw.ps1 local install doctoolchain
 
 Note that running docToolchain in 'local' environment needs a
-Java runtime (major version 11, 14 or 17) installed on your host.
+Java runtime major version 17 installed on your host.
 
 2. 'docker': pull the docToolchain image and execute docToolchain in a container environment.
 
