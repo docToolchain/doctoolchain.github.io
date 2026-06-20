@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
+# Copyright 2024, Ralf D. Müller and the docToolchain contributors
+#
+# dtcw4 — wrapper for docToolchain v4
+#
+# Handles v4-specific installation (git clone main-4.x + packageLibs),
+# then delegates all task execution to the installed dtcw in
+# ~/.doctoolchain/docToolchain-<version>/dtcw.
+#
+# Only this script needs to live in your project directory.
+#
+# Usage:
+#   ./dtcw4 local install doctoolchain   — install v4 from source
+#   ./dtcw4 local generateHTML           — run a v4 task
+#   ./dtcw4 tasks                        — list available v4 tasks
+#   ./dtcw4 --version                    — show version info
+
+set -e
+set -u
+set -o pipefail
+
+DTC_VERSION=4.0.0
+export DTC_VERSION
+
+DTC_V4_BRANCH="${DTC_V4_BRANCH:-main-4.x}"
+GITHUB_PROJECT_URL=https://github.com/docToolchain/docToolchain
+
+DTC_ROOT="${HOME}/.doctoolchain"
+DTC_HOME="${DTC_ROOT}/docToolchain-${DTC_VERSION}"
+
+has() {
+    command -v "$1" 1>/dev/null 2>&1
+}
+
+error() {
+    echo "Error: $1" >&2
+}
+
+v4_install() {
+    local update_mode=false
+    if [ "${1:-}" = "--update" ]; then
+        update_mode=true
+    fi
+
+    if [ -d "${DTC_HOME}/lib" ] && [ -n "$(ls -A "${DTC_HOME}/lib/"*.jar 2>/dev/null)" ] && [ "${update_mode}" = false ]; then
+        echo "docToolchain v4 already installed in '${DTC_HOME}'."
+        echo ""
+        echo "To update, run:"
+        echo "  ./dtcw4 local install doctoolchain --update"
+        return 0
+    fi
+
+    if ! has git; then
+        error "git is required to install docToolchain v4 from source."
+        exit 1
+    fi
+
+    if ! has java; then
+        error "Java 17, 21 or 25 is required. Install with: ./dtcw4 local install java"
+        exit 1
+    fi
+
+    echo "Installing docToolchain v4 from branch '${DTC_V4_BRANCH}'..."
+    echo ""
+
+    if [ -d "${DTC_HOME}/.git" ]; then
+        echo "Updating existing clone..."
+        git -C "${DTC_HOME}" fetch origin "${DTC_V4_BRANCH}"
+        git -C "${DTC_HOME}" checkout "${DTC_V4_BRANCH}"
+        git -C "${DTC_HOME}" reset --hard "origin/${DTC_V4_BRANCH}"
+    else
+        # Remove non-git installation if it exists (e.g. from zip install)
+        if [ -d "${DTC_HOME}" ]; then
+            echo "Replacing existing installation with git clone..."
+            rm -rf "${DTC_HOME}"
+        fi
+        mkdir -p "${DTC_ROOT}"
+        echo "Cloning docToolchain (branch: ${DTC_V4_BRANCH})..."
+        git clone --branch "${DTC_V4_BRANCH}" --single-branch \
+            "${GITHUB_PROJECT_URL}.git" "${DTC_HOME}"
+    fi
+
+    echo ""
+    echo "Building v4 runtime libraries (one-time Gradle build, not needed at runtime)..."
+    (cd "${DTC_HOME}" && ./gradlew packageLibs --no-daemon --warning-mode=none -q)
+
+    local jar_count
+    jar_count=$(find "${DTC_HOME}/build/lib" -name '*.jar' 2>/dev/null | wc -l)
+
+    # Copy built libs to lib/ so dtcw can find them
+    mkdir -p "${DTC_HOME}/lib"
+    cp "${DTC_HOME}/build/lib/"*.jar "${DTC_HOME}/lib/"
+
+    echo ""
+    echo "docToolchain v4 installed successfully (${jar_count} JARs)."
+    echo ""
+    echo "Usage:"
+    echo "  ./dtcw4 tasks                  — list available tasks"
+    echo "  ./dtcw4 local generateHTML      — generate HTML"
+    echo "  ./dtcw4 local generatePDF       — generate PDF"
+    echo "  ./dtcw4 local generateSite      — generate microsite"
+    echo "  ./dtcw4 local downloadTemplate  — download arc42/req42 template"
+}
+
+# Intercept 'install doctoolchain' — delegate everything else to dtcw
+case "${1:-}" in
+    local)
+        if [ "${2:-}" = "install" ] && [ "${3:-}" = "doctoolchain" ]; then
+            v4_install "${4:-}"
+            exit 0
+        fi
+        if [ "${2:-}" = "install" ] && [ "${3:-}" = "java" ]; then
+            if [ ! -f "${DTC_HOME}/dtcw" ]; then
+                echo "Downloading dtcw to install Java..."
+                mkdir -p "${DTC_HOME}"
+                curl -sLo "${DTC_HOME}/dtcw" https://doctoolchain.org/dtcw
+                chmod +x "${DTC_HOME}/dtcw"
+            fi
+        fi
+        ;;
+    --help|-h)
+        echo "dtcw4 — docToolchain v4 wrapper"
+        echo ""
+        echo "Usage:"
+        echo "  ./dtcw4 local install doctoolchain [--update]"
+        echo "  ./dtcw4 [local] <task> [args...]"
+        echo "  ./dtcw4 tasks"
+        echo "  ./dtcw4 --version"
+        echo ""
+        echo "Environment variables:"
+        echo "  DTC_V4_BRANCH   Git branch to install from (default: main-4.x)"
+        echo ""
+        echo "Installation uses Gradle once to package runtime JARs."
+        echo "After that, all tasks run without Gradle (direct JVM execution)."
+        exit 0
+        ;;
+esac
+
+# For everything else, delegate to the installed dtcw
+DTCW="${DTC_HOME}/dtcw"
+if [ ! -f "${DTCW}" ]; then
+    error "docToolchain v4 is not installed. Run: ./dtcw4 local install doctoolchain"
+    exit 1
+fi
+
+exec "${DTCW}" "$@"
